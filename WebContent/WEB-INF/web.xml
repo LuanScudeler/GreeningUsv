@@ -9,4 +9,25 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+		<servlet-name>Jersey Web Application</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param >
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.greeningu.controller</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey Web Application</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+	
+	<mime-mapping>    
+       	<extension>js</extension>        
+      	<mime-type>application/javascript</mime-type>        
+    </mime-mapping>
+	
 </web-app>
