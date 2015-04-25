@@ -1,29 +1,32 @@
 package com.greeningu.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "permissao")
+@Entity(name = "permissao")
 public class Permissao implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6986151565394824942L;
 
 	@Id
-	@GeneratedValue
-	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private Integer id;
 	
-	@Column(name = "tipo")
+	@Column
 	private String tipo;
+	
+	@OneToMany(mappedBy = "permissao")
+	private List<Usuario> usuarios;
+		
 	
 	public Permissao(){}
 
@@ -79,6 +82,4 @@ public class Permissao implements Serializable {
 			return false;
 		return true;
 	}
-
-
 }

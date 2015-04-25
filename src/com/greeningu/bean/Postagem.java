@@ -3,34 +3,49 @@ package com.greeningu.bean;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+@Entity(name = "postagem")
 public class Postagem implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8505471156320246074L;
 	
-	private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_postagem")
+	private Integer idPostagem;
+	
+	@Column
 	private String titulo;
+	
+	@Column
 	private String descricao;
+	
+	
 	private byte[] imagem;
 	
+		
 	public Postagem(){}
 
 	public Postagem(Integer id, String titulo, String descricao, byte[] imagem) {
 		super();
-		this.id = id;
+		this.idPostagem = id;
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.imagem = imagem;
 	}
 
 	public Integer getId() {
-		return id;
+		return idPostagem;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.idPostagem = id;
 	}
 
 	public String getTitulo() {
@@ -63,7 +78,7 @@ public class Postagem implements Serializable{
 		int result = 1;
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((idPostagem == null) ? 0 : idPostagem.hashCode());
 		result = prime * result + Arrays.hashCode(imagem);
 		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
 		return result;
@@ -83,10 +98,10 @@ public class Postagem implements Serializable{
 				return false;
 		} else if (!descricao.equals(other.descricao))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (idPostagem == null) {
+			if (other.idPostagem != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!idPostagem.equals(other.idPostagem))
 			return false;
 		if (!Arrays.equals(imagem, other.imagem))
 			return false;

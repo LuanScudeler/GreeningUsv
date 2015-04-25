@@ -1,30 +1,61 @@
 package com.greeningu.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+@Entity(name = "usuario")
 public class Usuario implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5918468404482711671L;
 
-	private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column (name = "id_usuario")	
+	private Integer idUsuario;
+
+	@Column
 	private String nome;
+	
+	@Column
 	private String sobrenome;
+	
+	@Column
 	private String email;
+	
+	@Column
 	private String login;
+	
+	@Column
 	private String senha;
+	
+	@Column
 	private Integer pontuacao;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_permissao")
 	private Permissao permissao;
+	
+	@ManyToMany(fetch = FetchType.LAZY)/*, cascade = {CascadeType.ALL}*/
+	@JoinTable(name="usuario_postagem", joinColumns=@JoinColumn(name="id_usuario"), inverseJoinColumns=@JoinColumn(name="id_postagem"))
+	private List<Postagem> postagens;
 
-	public Usuario() {
-	}
+	public Usuario() {}
 
-	public Usuario(Integer id, String nome, String sobrenome, String email,
+	public Usuario(Integer idUsuario, String nome, String sobrenome, String email,
 			String login, String senha, Integer pontuacao, Permissao permissao) {
 		super();
-		this.id = id;
+		this.idUsuario = idUsuario;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.email = email;
@@ -43,11 +74,11 @@ public class Usuario implements Serializable {
 	}
 
 	public Integer getId() {
-		return id;
+		return idUsuario;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.idUsuario = id;
 	}
 
 	public String getNome() {
@@ -103,7 +134,7 @@ public class Usuario implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((idUsuario == null) ? 0 : idUsuario.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result
@@ -129,10 +160,10 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (idUsuario == null) {
+			if (other.idUsuario != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!idUsuario.equals(other.idUsuario))
 			return false;
 		if (login == null) {
 			if (other.login != null)
