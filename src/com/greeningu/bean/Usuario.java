@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity(name = "usuario")
 public class Usuario implements Serializable {
@@ -24,6 +25,12 @@ public class Usuario implements Serializable {
 	@Column (name = "id_usuario")	
 	private Integer idUsuario;
 
+	@OneToMany(mappedBy = "usuario")
+	private List<Voto> votos;
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<Comentario> comentarios;
+	
 	@Column
 	private String nome;
 	
@@ -50,6 +57,11 @@ public class Usuario implements Serializable {
 	@JoinTable(name="usuario_postagem", joinColumns=@JoinColumn(name="id_usuario"), inverseJoinColumns=@JoinColumn(name="id_postagem"))
 	private List<Postagem> postagens;
 
+	@ManyToMany(fetch = FetchType.LAZY)/*, cascade = {CascadeType.ALL}*/
+	@JoinTable(name="usuario_comunidade", joinColumns=@JoinColumn(name="id_usuario"), inverseJoinColumns=@JoinColumn(name="id_comunidade"))
+	private List<Comunidade> comunidades;
+	
+	
 	public Usuario() {}
 
 	public Usuario(Integer idUsuario, String nome, String sobrenome, String email,
@@ -63,6 +75,58 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 		this.pontuacao = pontuacao;
 		this.permissao = permissao;
+	}
+
+	public Integer getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public List<Voto> getVotos() {
+		return votos;
+	}
+
+	public void setVotos(List<Voto> votos) {
+		this.votos = votos;
+	}
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public Integer getPontuacao() {
+		return pontuacao;
+	}
+
+	public void setPontuacao(Integer pontuacao) {
+		this.pontuacao = pontuacao;
+	}
+
+	public List<Postagem> getPostagens() {
+		return postagens;
+	}
+
+	public void setPostagens(List<Postagem> postagens) {
+		this.postagens = postagens;
+	}
+
+	public List<Comunidade> getComunidades() {
+		return comunidades;
+	}
+
+	public void setComunidades(List<Comunidade> comunidades) {
+		this.comunidades = comunidades;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public Permissao getPermissao() {
