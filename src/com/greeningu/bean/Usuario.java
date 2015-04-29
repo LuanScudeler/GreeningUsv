@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity(name = "usuario")
 public class Usuario implements Serializable {
@@ -24,6 +25,12 @@ public class Usuario implements Serializable {
 	@Column (name = "id_usuario")	
 	private Integer idUsuario;
 
+	@OneToMany(mappedBy = "usuario")
+	private List<Voto> votos;
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<Comentario> comentarios;
+	
 	@Column
 	private String nome;
 	
@@ -61,6 +68,11 @@ public class Usuario implements Serializable {
 	@JoinTable(name="usuario_postagem", joinColumns=@JoinColumn(name="id_usuario"), inverseJoinColumns=@JoinColumn(name="id_postagem"))
 	private List<Postagem> postagens;
 
+	@ManyToMany(fetch = FetchType.LAZY)/*, cascade = {CascadeType.ALL}*/
+	@JoinTable(name="usuario_comunidade", joinColumns=@JoinColumn(name="id_usuario"), inverseJoinColumns=@JoinColumn(name="id_comunidade"))
+	private List<Comunidade> comunidades;
+	
+	
 	public Usuario() {}
 
 	public Usuario(Integer idUsuario, String nome, String sobrenome,
@@ -79,12 +91,49 @@ public class Usuario implements Serializable {
 		this.postagens = postagens;
 	}
 
+	public Usuario(Integer idUsuario, List<Voto> votos,
+			List<Comentario> comentarios, String nome, String sobrenome,
+			String email, String login, String senha, char sexo,
+			Integer pontuacao, Permissao permissao, List<Postagem> postagens,
+			List<Comunidade> comunidades) {
+		super();
+		this.idUsuario = idUsuario;
+		this.votos = votos;
+		this.comentarios = comentarios;
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.email = email;
+		this.login = login;
+		this.senha = senha;
+		this.sexo = sexo;
+		this.pontuacao = pontuacao;
+		this.permissao = permissao;
+		this.postagens = postagens;
+		this.comunidades = comunidades;
+	}
+
 	public Integer getIdUsuario() {
 		return idUsuario;
 	}
 
 	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+
+	public List<Voto> getVotos() {
+		return votos;
+	}
+
+	public void setVotos(List<Voto> votos) {
+		this.votos = votos;
+	}
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 	public String getNome() {
@@ -151,10 +200,22 @@ public class Usuario implements Serializable {
 		this.postagens = postagens;
 	}
 
+	public List<Comunidade> getComunidades() {
+		return comunidades;
+	}
+
+	public void setComunidades(List<Comunidade> comunidades) {
+		this.comunidades = comunidades;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((comentarios == null) ? 0 : comentarios.hashCode());
+		result = prime * result
+				+ ((comunidades == null) ? 0 : comunidades.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((idUsuario == null) ? 0 : idUsuario.hashCode());
@@ -170,6 +231,7 @@ public class Usuario implements Serializable {
 		result = prime * result + sexo;
 		result = prime * result
 				+ ((sobrenome == null) ? 0 : sobrenome.hashCode());
+		result = prime * result + ((votos == null) ? 0 : votos.hashCode());
 		return result;
 	}
 
@@ -182,6 +244,16 @@ public class Usuario implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
+		if (comentarios == null) {
+			if (other.comentarios != null)
+				return false;
+		} else if (!comentarios.equals(other.comentarios))
+			return false;
+		if (comunidades == null) {
+			if (other.comunidades != null)
+				return false;
+		} else if (!comunidades.equals(other.comunidades))
+			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -229,8 +301,13 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!sobrenome.equals(other.sobrenome))
 			return false;
+		if (votos == null) {
+			if (other.votos != null)
+				return false;
+		} else if (!votos.equals(other.votos))
+			return false;
 		return true;
 	}
-
+	
 	
 }
