@@ -2,15 +2,13 @@ package com.greeningu.bean;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity(name = "postagem")
 public class Postagem implements Serializable{
@@ -22,52 +20,17 @@ public class Postagem implements Serializable{
 	@Column(name = "id_postagem")
 	private Integer idPostagem;
 	
-	@OneToMany(mappedBy = "postagem")
-	private List<Voto> votos;
-	
-	@OneToMany(mappedBy = "postagem")
-	private List<Comentario> comentarios;
-	
 	@Column
 	private String titulo;
 	
 	@Column
 	private String descricao;
 	
-	@Lob
-	@Column
+	
 	private byte[] imagem;
 	
-	
+		
 	public Postagem(){}
-
-	public Integer getIdPostagem() {
-		return idPostagem;
-	}
-
-	public void setIdPostagem(Integer idPostagem) {
-		this.idPostagem = idPostagem;
-	}
-
-	public List<Voto> getVotos() {
-		return votos;
-	}
-
-	public void setVotos(List<Voto> votos) {
-		this.votos = votos;
-	}
-
-	public List<Comentario> getComentarios() {
-		return comentarios;
-	}
-
-	public void setComentarios(List<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 	public Postagem(Integer id, String titulo, String descricao, byte[] imagem) {
 		super();

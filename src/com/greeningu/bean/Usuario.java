@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity(name = "usuario")
 public class Usuario implements Serializable {
@@ -25,12 +24,6 @@ public class Usuario implements Serializable {
 	@Column (name = "id_usuario")	
 	private Integer idUsuario;
 
-	@OneToMany(mappedBy = "usuario")
-	private List<Voto> votos;
-	
-	@OneToMany(mappedBy = "usuario")
-	private List<Comentario> comentarios;
-	
 	@Column
 	private String nome;
 	
@@ -46,6 +39,17 @@ public class Usuario implements Serializable {
 	@Column
 	private String senha;
 	
+	public char getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(char sexo) {
+		this.sexo = sexo;
+	}
+
+	@Column
+	private char sexo;
+	
 	@Column
 	private Integer pontuacao;
 	
@@ -57,15 +61,11 @@ public class Usuario implements Serializable {
 	@JoinTable(name="usuario_postagem", joinColumns=@JoinColumn(name="id_usuario"), inverseJoinColumns=@JoinColumn(name="id_postagem"))
 	private List<Postagem> postagens;
 
-	@ManyToMany(fetch = FetchType.LAZY)/*, cascade = {CascadeType.ALL}*/
-	@JoinTable(name="usuario_comunidade", joinColumns=@JoinColumn(name="id_usuario"), inverseJoinColumns=@JoinColumn(name="id_comunidade"))
-	private List<Comunidade> comunidades;
-	
-	
 	public Usuario() {}
 
-	public Usuario(Integer idUsuario, String nome, String sobrenome, String email,
-			String login, String senha, Integer pontuacao, Permissao permissao) {
+	public Usuario(Integer idUsuario, String nome, String sobrenome,
+			String email, String login, String senha, char sexo,
+			Integer pontuacao, Permissao permissao, List<Postagem> postagens) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
@@ -73,8 +73,10 @@ public class Usuario implements Serializable {
 		this.email = email;
 		this.login = login;
 		this.senha = senha;
+		this.sexo = sexo;
 		this.pontuacao = pontuacao;
 		this.permissao = permissao;
+		this.postagens = postagens;
 	}
 
 	public Integer getIdUsuario() {
@@ -83,66 +85,6 @@ public class Usuario implements Serializable {
 
 	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
-	}
-
-	public List<Voto> getVotos() {
-		return votos;
-	}
-
-	public void setVotos(List<Voto> votos) {
-		this.votos = votos;
-	}
-
-	public List<Comentario> getComentarios() {
-		return comentarios;
-	}
-
-	public void setComentarios(List<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
-
-	public Integer getPontuacao() {
-		return pontuacao;
-	}
-
-	public void setPontuacao(Integer pontuacao) {
-		this.pontuacao = pontuacao;
-	}
-
-	public List<Postagem> getPostagens() {
-		return postagens;
-	}
-
-	public void setPostagens(List<Postagem> postagens) {
-		this.postagens = postagens;
-	}
-
-	public List<Comunidade> getComunidades() {
-		return comunidades;
-	}
-
-	public void setComunidades(List<Comunidade> comunidades) {
-		this.comunidades = comunidades;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Permissao getPermissao() {
-		return permissao;
-	}
-
-	public void setPermissao(Permissao permissao) {
-		this.permissao = permissao;
-	}
-
-	public Integer getId() {
-		return idUsuario;
-	}
-
-	public void setId(Integer id) {
-		this.idUsuario = id;
 	}
 
 	public String getNome() {
@@ -185,12 +127,28 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
-	public Integer getPontos() {
+	public Integer getPontuacao() {
 		return pontuacao;
 	}
 
-	public void setPontos(Integer pontuacao) {
+	public void setPontuacao(Integer pontuacao) {
 		this.pontuacao = pontuacao;
+	}
+
+	public Permissao getPermissao() {
+		return permissao;
+	}
+
+	public void setPermissao(Permissao permissao) {
+		this.permissao = permissao;
+	}
+
+	public List<Postagem> getPostagens() {
+		return postagens;
+	}
+
+	public void setPostagens(List<Postagem> postagens) {
+		this.postagens = postagens;
 	}
 
 	@Override
@@ -198,13 +156,18 @@ public class Usuario implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((idUsuario == null) ? 0 : idUsuario.hashCode());
+		result = prime * result
+				+ ((idUsuario == null) ? 0 : idUsuario.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result
 				+ ((permissao == null) ? 0 : permissao.hashCode());
-		result = prime * result + ((pontuacao == null) ? 0 : pontuacao.hashCode());
+		result = prime * result
+				+ ((pontuacao == null) ? 0 : pontuacao.hashCode());
+		result = prime * result
+				+ ((postagens == null) ? 0 : postagens.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		result = prime * result + sexo;
 		result = prime * result
 				+ ((sobrenome == null) ? 0 : sobrenome.hashCode());
 		return result;
@@ -249,10 +212,17 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!pontuacao.equals(other.pontuacao))
 			return false;
+		if (postagens == null) {
+			if (other.postagens != null)
+				return false;
+		} else if (!postagens.equals(other.postagens))
+			return false;
 		if (senha == null) {
 			if (other.senha != null)
 				return false;
 		} else if (!senha.equals(other.senha))
+			return false;
+		if (sexo != other.sexo)
 			return false;
 		if (sobrenome == null) {
 			if (other.sobrenome != null)
@@ -262,4 +232,5 @@ public class Usuario implements Serializable {
 		return true;
 	}
 
+	
 }

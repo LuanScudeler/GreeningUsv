@@ -7,12 +7,11 @@
 		<!-- Configuração da conexão com o banco MySQL e dialeto -->
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/greeningusv</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/greeningu</property>
 		<property name="connection.username">root</property>
-		<property name="connection.password">root</property>
+		<property name="connection.password">JOR1991son</property>
         <property name="current_session_context_class">thread</property>  
-		<property name='connection.pool_size'>1</property>
-        
+
 		<!-- Usando as configurações do C3PO para pool de conexões -->
 		<property name="c3po.min_size">5</property>
 		<property name="c3po.max_size">20</property>
@@ -28,12 +27,6 @@
 		
 		<!-- Mapeando classes -->
 		<!--<mapping class="com.livro.capitulo3.categoria.Categoria"/>-->
-		<mapping class="com.greeningu.bean.Comentario"/>
-		<mapping class="com.greeningu.bean.Comunidade"/>
-		<mapping class="com.greeningu.bean.Permissao"/>
-		<mapping class="com.greeningu.bean.Postagem"/>
-		<mapping class="com.greeningu.bean.Usuario"/>
-		<mapping class="com.greeningu.bean.Voto"/>
 				
 	</session-factory>
 </hibernate-configuration>
