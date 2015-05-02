@@ -80,7 +80,7 @@ public class PermissaoDAO {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
 			Criteria filtro = this.sessao.createCriteria(Permissao.class);
-			filtro.add(Restrictions.eq("permissao", id));
+			filtro.add(Restrictions.eq("id", id));
 			permissao = (Permissao) filtro.uniqueResult();
 			this.transacao.commit();
 		} catch (Throwable e) {
@@ -124,18 +124,19 @@ public class PermissaoDAO {
 		return permissoes;
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		List<Permissao> p = new ArrayList<Permissao>();
 		PermissaoDAO pd = new PermissaoDAO();
 		
-		//pd.salvar(new Permissao(0,"Teste"));
+		pd.salvar(new Permissao(0,"Comum"));
 		
 		p = pd.listar();
 		
 		for (Permissao pe : p) {
 			System.out.println(pe.getId() + " - "+pe.getTipo());
 		}
-	}
+		System.out.println(pd.buscaPermissao(3).getTipo());
+	}*/
 	
 	
 }

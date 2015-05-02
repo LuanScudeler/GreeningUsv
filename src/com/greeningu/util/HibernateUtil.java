@@ -18,7 +18,7 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		try {
 			Configuration cfg = new Configuration();
-			cfg.configure("hibernate.cfg.xml");
+			cfg.configure("hibernate.cfg.xml");	
 			return cfg.buildSessionFactory();
 		} catch (Throwable e) {
 			System.out.println("Criação inicial do objeto SessionFactory falhou. Erro: " + e);
@@ -26,9 +26,8 @@ public class HibernateUtil {
 		}
 	}
 
-	public static void criaDatabase(){
-		Configuration cfg = new Configuration();
-		
+	/*public static void criaDatabase(){
+*		
 		cfg.addAnnotatedClass(Permissao.class);
 		cfg.addAnnotatedClass(Usuario.class);
 		cfg.addAnnotatedClass(Comentario.class);
@@ -38,14 +37,14 @@ public class HibernateUtil {
 
 		SchemaExport schemaExport = new SchemaExport(cfg);
 		schemaExport.create(true, true);
-	}
+	}*/
 
 	public static SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 
-	public static void main(String[] args) {
-		HibernateUtil.criaDatabase();
-	}
+	/*public static void main(String[] args) {
+		//HibernateUtil.criaDatabase();
+	}*/
 }
 

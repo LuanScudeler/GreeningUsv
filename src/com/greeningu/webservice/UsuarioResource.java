@@ -8,7 +8,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.greeningu.bean.Permissao;
 import com.greeningu.bean.Usuario;
+import com.greeningu.dao.PermissaoDAO;
+import com.greeningu.dao.UsuarioDAO;
 
 @Path("usuario")
 public class UsuarioResource {
@@ -18,11 +21,20 @@ public class UsuarioResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String inserirUsuario(String usuario){
-		System.out.println(usuario);
-		Usuario usr = new Gson().fromJson(usuario, Usuario.class);
-//		System.err.println(usr.getNome() + " " + usr.getSobrenome() + " " + " " + 
-//		usr.getEmail() + " " + usr.getSenha() + " " + usr.getSexo());
-		return "{\"status\":\"ok\"}";
+		try{
+			UsuarioDAO udao = new UsuarioDAO();
+			PermissaoDAO pdao = new PermissaoDAO();
+			
+			Permissao p = pdao.buscaPermissao(3);
+			
+			Usuario usr = new Gson().fromJson(usuario, Usuario.class);
+			usr.setPermissao(p);
+			udao.salvar(usr);
+			return "{\"status\":\"Usuário(a) cadastrado(a) com sucesso.\"}";
+		}catch(Exception e){
+			System.err.println(e);
+			return "{\"status\":\"Falha ao cadastrar usuário(a).\"}";
+		}
 	}
 	
 	@GET
