@@ -128,14 +128,14 @@ public class PermissaoDAO {
 		List<Permissao> p = new ArrayList<Permissao>();
 		PermissaoDAO pd = new PermissaoDAO();
 		
-		pd.salvar(new Permissao(0,"Comum"));
+		//pd.salvar(new Permissao(0,"Comum", null));
 		
-		p = pd.listar();
+		//p = pd.listar();
 		
-		for (Permissao pe : p) {
-			System.out.println(pe.getId() + " - "+pe.getTipo());
-		}
-		System.out.println(pd.buscaPermissao(3).getTipo());
+		System.out.println(pd.buscaPermissao(1).getTipo());
+		
+		
+		
 	}*/
 	
 	

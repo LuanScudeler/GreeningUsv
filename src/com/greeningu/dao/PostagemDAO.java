@@ -1,6 +1,5 @@
 package com.greeningu.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,79 +8,79 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import com.greeningu.bean.Usuario;
+import com.greeningu.bean.Postagem;
 import com.greeningu.util.HibernateUtil;
 
-public class UsuarioDAO {
+public class PostagemDAO {
 	private Session sessao;
 	private Transaction transacao;
 
-	public void salvar(Usuario usuario) {
+	public void salvar(Postagem postagem) {
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			this.sessao.save(usuario);
+			this.sessao.save(postagem);
 			this.transacao.commit();
 		} catch (HibernateException e) {
-			System.out.println("Não foi possível inserir a usuario. Erro: " + e.getMessage());
+			System.out.println("Não foi possível inserir a postagem. Erro: " + e.getMessage());
 		} finally {
 			try {
 				if (this.sessao.isOpen()) {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de inserção da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de inserção da classe PostagemDAO. Mensagem: " + e.getMessage());
 			}
 		}
 	}
 
-	public void atualizar(Usuario usuario) {
+	public void atualizar(Postagem postagem) {
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			this.sessao.update(usuario);
+			this.sessao.update(postagem);
 			this.transacao.commit();
 		} catch (HibernateException e) {
-			System.out.println("Não foi possível alterar a usuario. Erro: " + e.getMessage());
+			System.out.println("Não foi possível alterar a postagem. Erro: " + e.getMessage());
 		} finally {
 			try {
 				if (this.sessao.isOpen()) {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de atualização  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de atualização  da classe PostagemDAO. Mensagem: " + e.getMessage());
 			}
 		}
 	}
 
-	public void excluir(Usuario usuario) {
+	public void excluir(Postagem postagem) {
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			this.sessao.delete(usuario);
+			this.sessao.delete(postagem);
 			this.transacao.commit();
 		} catch (HibernateException e) {
-			System.out.println("Não foi possível excluir a usuario. Erro: " + e.getMessage());
+			System.out.println("Não foi possível excluir a postagem. Erro: " + e.getMessage());
 		} finally {
 			try {
 				if (this.sessao.isOpen()) {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de exclusão  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de exclusão  da classe PostagemDAO. Mensagem: " + e.getMessage());
 			}
 		}
 	}
 
-	public Usuario buscaUsuario(Integer id) {
-		Usuario usuario = null;
+	public Postagem buscaPostagem(Integer id) {
+		Postagem postagem = null;
 
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			Criteria filtro = this.sessao.createCriteria(Usuario.class);
+			Criteria filtro = this.sessao.createCriteria(Postagem.class);
 			filtro.add(Restrictions.eq("id", id));
-			usuario = (Usuario) filtro.uniqueResult();
+			postagem = (Postagem) filtro.uniqueResult();
 			this.transacao.commit();
 		} catch (Throwable e) {
 			if (this.transacao.isActive()) {
@@ -93,19 +92,19 @@ public class UsuarioDAO {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de busca  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de busca  da classe PostagemDAO. Mensagem: " + e.getMessage());
 			}
 		}
-		return usuario;
+		return postagem;
 	}
 
-	public List<Usuario> listar() {
-		List<Usuario> permissoes = null;
+	public List<Postagem> listar() {
+		List<Postagem> permissoes = null;
 
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			Criteria filtro = this.sessao.createCriteria(Usuario.class);
+			Criteria filtro = this.sessao.createCriteria(Postagem.class);
 			permissoes = filtro.list();
 			this.transacao.commit();
 		} catch (Throwable e) {
@@ -118,17 +117,26 @@ public class UsuarioDAO {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de listagem  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de listagem  da classe PostagemDAO. Mensagem: " + e.getMessage());
 			}
 		}
 		return permissoes;
 	}
-	public static void main(String[] args) {
-		UsuarioDAO u = new UsuarioDAO();
-		ArrayList<Usuario> ul = (ArrayList<Usuario>) u.listar();
+	
+	/*public static void main(String[] args) {
+		List<Postagem> p = new ArrayList<Postagem>();
+		PostagemDAO pd = new PostagemDAO();
 		
-		for (Usuario usuario : ul) {
-			System.out.println(usuario.getNome());
+		pd.salvar(new Postagem(0,"Comum"));
+		
+		p = pd.listar();
+		
+		for (Postagem pe : p) {
+			System.out.println(pe.getId() + " - "+pe.getTipo());
 		}
-	}
+		System.out.println(pd.buscaPostagem(3).getTipo());
+	}*/
+	
+	
 }
+

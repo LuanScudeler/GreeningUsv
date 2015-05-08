@@ -4,7 +4,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
@@ -25,11 +27,14 @@ public class UsuarioResource {
 			UsuarioDAO udao = new UsuarioDAO();
 			PermissaoDAO pdao = new PermissaoDAO();
 			
-			Permissao p = pdao.buscaPermissao(3);
+			Permissao p = pdao.buscaPermissao(1);
+			
+			System.out.println(p.getTipo());
 			
 			Usuario usr = new Gson().fromJson(usuario, Usuario.class);
 			usr.setPermissao(p);
 			udao.salvar(usr);
+			System.out.println("cadOk");
 			return "{\"status\":\"Usuário(a) cadastrado(a) com sucesso.\"}";
 		}catch(Exception e){
 			System.err.println(e);
@@ -38,9 +43,35 @@ public class UsuarioResource {
 	}
 	
 	@GET
-	@Path("/")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTeste(){
-		return "{\"status\":\"ok\"}";
+	public String getUsuario(@PathParam("id") Integer id){
+		UsuarioDAO udao = new UsuarioDAO();
+
+		Usuario usuario = udao.buscaUsuario(id);
+		
+		//System.out.println(usuario.getNome());
+		
+		Gson gson = new Gson();
+		String usr = gson.toJson(usuario, Usuario.class);
+		return usr;
 	}
+	
+	@GET
+	@Path("/delete/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String excluirUsuario(@PathParam("id") Integer id){
+		try{
+			UsuarioDAO udao = new UsuarioDAO();
+			
+			Usuario usuario = udao.buscaUsuario(id); 
+			udao.excluir(usuario);
+			
+			return "ok";//TODO
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;//TODO
+		}
+	}
+
 }

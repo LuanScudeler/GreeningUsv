@@ -1,6 +1,5 @@
 package com.greeningu.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,79 +8,79 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import com.greeningu.bean.Usuario;
+import com.greeningu.bean.Comentario;
 import com.greeningu.util.HibernateUtil;
 
-public class UsuarioDAO {
+public class ComentarioDAO {
 	private Session sessao;
 	private Transaction transacao;
 
-	public void salvar(Usuario usuario) {
+	public void salvar(Comentario comentario) {
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			this.sessao.save(usuario);
+			this.sessao.save(comentario);
 			this.transacao.commit();
 		} catch (HibernateException e) {
-			System.out.println("Não foi possível inserir a usuario. Erro: " + e.getMessage());
+			System.out.println("Não foi possível inserir a comentario. Erro: " + e.getMessage());
 		} finally {
 			try {
 				if (this.sessao.isOpen()) {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de inserção da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de inserção da classe ComentarioDAO. Mensagem: " + e.getMessage());
 			}
 		}
 	}
 
-	public void atualizar(Usuario usuario) {
+	public void atualizar(Comentario comentario) {
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			this.sessao.update(usuario);
+			this.sessao.update(comentario);
 			this.transacao.commit();
 		} catch (HibernateException e) {
-			System.out.println("Não foi possível alterar a usuario. Erro: " + e.getMessage());
+			System.out.println("Não foi possível alterar a comentario. Erro: " + e.getMessage());
 		} finally {
 			try {
 				if (this.sessao.isOpen()) {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de atualização  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de atualização  da classe ComentarioDAO. Mensagem: " + e.getMessage());
 			}
 		}
 	}
 
-	public void excluir(Usuario usuario) {
+	public void excluir(Comentario comentario) {
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			this.sessao.delete(usuario);
+			this.sessao.delete(comentario);
 			this.transacao.commit();
 		} catch (HibernateException e) {
-			System.out.println("Não foi possível excluir a usuario. Erro: " + e.getMessage());
+			System.out.println("Não foi possível excluir a comentario. Erro: " + e.getMessage());
 		} finally {
 			try {
 				if (this.sessao.isOpen()) {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de exclusão  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de exclusão  da classe ComentarioDAO. Mensagem: " + e.getMessage());
 			}
 		}
 	}
 
-	public Usuario buscaUsuario(Integer id) {
-		Usuario usuario = null;
+	public Comentario buscaComentario(Integer id) {
+		Comentario comentario = null;
 
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			Criteria filtro = this.sessao.createCriteria(Usuario.class);
+			Criteria filtro = this.sessao.createCriteria(Comentario.class);
 			filtro.add(Restrictions.eq("id", id));
-			usuario = (Usuario) filtro.uniqueResult();
+			comentario = (Comentario) filtro.uniqueResult();
 			this.transacao.commit();
 		} catch (Throwable e) {
 			if (this.transacao.isActive()) {
@@ -93,19 +92,19 @@ public class UsuarioDAO {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de busca  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de busca  da classe ComentarioDAO. Mensagem: " + e.getMessage());
 			}
 		}
-		return usuario;
+		return comentario;
 	}
 
-	public List<Usuario> listar() {
-		List<Usuario> permissoes = null;
+	public List<Comentario> listar() {
+		List<Comentario> permissoes = null;
 
 		try {
 			this.sessao = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.sessao.beginTransaction();
-			Criteria filtro = this.sessao.createCriteria(Usuario.class);
+			Criteria filtro = this.sessao.createCriteria(Comentario.class);
 			permissoes = filtro.list();
 			this.transacao.commit();
 		} catch (Throwable e) {
@@ -118,17 +117,26 @@ public class UsuarioDAO {
 					this.sessao.close();
 				}
 			} catch (Throwable e) {
-				System.out.println("Erro ao fechar operação de listagem  da classe UsuarioDAO. Mensagem: " + e.getMessage());
+				System.out.println("Erro ao fechar operação de listagem  da classe ComentarioDAO. Mensagem: " + e.getMessage());
 			}
 		}
 		return permissoes;
 	}
-	public static void main(String[] args) {
-		UsuarioDAO u = new UsuarioDAO();
-		ArrayList<Usuario> ul = (ArrayList<Usuario>) u.listar();
+	
+	/*public static void main(String[] args) {
+		List<Comentario> p = new ArrayList<Comentario>();
+		ComentarioDAO pd = new ComentarioDAO();
 		
-		for (Usuario usuario : ul) {
-			System.out.println(usuario.getNome());
+		pd.salvar(new Comentario(0,"Comum"));
+		
+		p = pd.listar();
+		
+		for (Comentario pe : p) {
+			System.out.println(pe.getId() + " - "+pe.getTipo());
 		}
-	}
+		System.out.println(pd.buscaComentario(3).getTipo());
+	}*/
+	
+	
 }
+

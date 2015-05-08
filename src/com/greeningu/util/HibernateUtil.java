@@ -27,7 +27,9 @@ public class HibernateUtil {
 	}
 
 	/*public static void criaDatabase(){
-*		
+		Configuration cfg = new Configuration();
+		cfg.configure("hibernate.cfg.xml");
+	
 		cfg.addAnnotatedClass(Permissao.class);
 		cfg.addAnnotatedClass(Usuario.class);
 		cfg.addAnnotatedClass(Comentario.class);
@@ -44,7 +46,7 @@ public class HibernateUtil {
 	}
 
 	/*public static void main(String[] args) {
-		//HibernateUtil.criaDatabase();
+		HibernateUtil.criaDatabase();
 	}*/
 }
 
