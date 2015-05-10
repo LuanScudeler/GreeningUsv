@@ -2,87 +2,38 @@ package com.greeningu.bean;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-
-@Entity(name = "postagem")
 public class Postagem implements Serializable{
-
-	private static final long serialVersionUID = -8505471156320246074L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_postagem")
-	private Integer idPostagem;
-	
-	@OneToMany(mappedBy = "postagem")
-	private List<Voto> votos;
-	
-	@OneToMany(mappedBy = "postagem")
-	private List<Comentario> comentarios;
-	
-	@Column
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1303445147454201116L;
+	private Integer id;
 	private String titulo;
-	
-	@Column
 	private String descricao;
-	
-	@Lob
-	@Column
 	private byte[] imagem;
-	
+	private Date data;
 	
 	public Postagem(){}
 
-	public Integer getIdPostagem() {
-		return idPostagem;
-	}
-
-	public void setIdPostagem(Integer idPostagem) {
-		this.idPostagem = idPostagem;
-	}
-
-	public List<Voto> getVotos() {
-		return votos;
-	}
-
-	public void setVotos(List<Voto> votos) {
-		this.votos = votos;
-	}
-
-	public List<Comentario> getComentarios() {
-		return comentarios;
-	}
-
-	public void setComentarios(List<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Postagem(Integer id, String titulo, String descricao, byte[] imagem) {
+	public Postagem(Integer id, String titulo, String descricao, byte[] imagem,
+			Date data) {
 		super();
-		this.idPostagem = id;
+		this.id = id;
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.imagem = imagem;
+		this.data = data;
 	}
 
 	public Integer getId() {
-		return idPostagem;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		this.idPostagem = id;
+		this.id = id;
 	}
 
 	public String getTitulo() {
@@ -109,13 +60,22 @@ public class Postagem implements Serializable{
 		this.imagem = imagem;
 	}
 
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + ((idPostagem == null) ? 0 : idPostagem.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + Arrays.hashCode(imagem);
 		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
 		return result;
@@ -130,15 +90,20 @@ public class Postagem implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Postagem other = (Postagem) obj;
+		if (data == null) {
+			if (other.data != null)
+				return false;
+		} else if (!data.equals(other.data))
+			return false;
 		if (descricao == null) {
 			if (other.descricao != null)
 				return false;
 		} else if (!descricao.equals(other.descricao))
 			return false;
-		if (idPostagem == null) {
-			if (other.idPostagem != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!idPostagem.equals(other.idPostagem))
+		} else if (!id.equals(other.id))
 			return false;
 		if (!Arrays.equals(imagem, other.imagem))
 			return false;
@@ -149,7 +114,4 @@ public class Postagem implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-
 }

@@ -2,55 +2,31 @@ package com.greeningu.bean;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-@Entity(name = "comunidade")
 public class Comunidade implements Serializable{
 
-	private static final long serialVersionUID = -6490059997087316904L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_comunidade")
-	private Integer idComunidade;
-	
-	@Column
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6849170179649062128L;
+	private Integer id;
 	private String nome;
-	
-	@Column
 	private int usarioLider;
 
 	public Comunidade(){}
-	
-	public Integer getIdComunidade() {
-		return idComunidade;
-	}
 
-	public void setIdComunidade(Integer idComunidade) {
-		this.idComunidade = idComunidade;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Comunidade(Integer id, String nome) {
+	public Comunidade(Integer id, String nome, int usarioLider) {
 		super();
-		this.idComunidade = id;
+		this.id = id;
 		this.nome = nome;
+		this.usarioLider = usarioLider;
 	}
 
 	public Integer getId() {
-		return idComunidade;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		this.idComunidade = id;
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -61,12 +37,21 @@ public class Comunidade implements Serializable{
 		this.nome = nome;
 	}
 
+	public int getUsarioLider() {
+		return usarioLider;
+	}
+
+	public void setUsarioLider(int usarioLider) {
+		this.usarioLider = usarioLider;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((idComunidade == null) ? 0 : idComunidade.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + usarioLider;
 		return result;
 	}
 
@@ -79,18 +64,18 @@ public class Comunidade implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Comunidade other = (Comunidade) obj;
-		if (idComunidade == null) {
-			if (other.idComunidade != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!idComunidade.equals(other.idComunidade))
+		} else if (!id.equals(other.id))
 			return false;
 		if (nome == null) {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
+		if (usarioLider != other.usarioLider)
+			return false;
 		return true;
 	}
-	
-	
 }

@@ -10,10 +10,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
-import com.greeningu.bean.Permissao;
+import com.greeningu.bean.MensagemPadrao;
 import com.greeningu.bean.Usuario;
-import com.greeningu.dao.PermissaoDAO;
-import com.greeningu.dao.UsuarioDAO;
+import com.greeningu.crud.UsuarioCRUD;
 
 @Path("usuario")
 public class UsuarioResource {
@@ -24,21 +23,30 @@ public class UsuarioResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String inserirUsuario(String usuario){
 		try{
-			UsuarioDAO udao = new UsuarioDAO();
-			PermissaoDAO pdao = new PermissaoDAO();
 			
-			Permissao p = pdao.buscaPermissao(1);
+			Gson gson = new Gson();
 			
-			System.out.println(p.getTipo());
+			UsuarioCRUD uc = new UsuarioCRUD();
 			
-			Usuario usr = new Gson().fromJson(usuario, Usuario.class);
-			usr.setPermissao(p);
-			udao.salvar(usr);
-			System.out.println("cadOk");
-			return "{\"status\":\"Usuário(a) cadastrado(a) com sucesso.\"}";
+			Usuario usr = gson.fromJson(usuario, Usuario.class);
+			
+			uc.salvar(usr);
+			
+			MensagemPadrao mp = new MensagemPadrao();
+			
+			mp.setStatus("Usuário cadastrado com sucesso.");
+			
+			return gson.toJson(mp);
+			
 		}catch(Exception e){
 			System.err.println(e);
-			return "{\"status\":\"Falha ao cadastrar usuário(a).\"}";
+			
+			MensagemPadrao mp = new MensagemPadrao();
+			mp.setStatus("Falha ao cadastrar usuário.");
+			
+			Gson gson = new Gson();
+			
+			return gson.toJson(mp);
 		}
 	}
 	
@@ -46,32 +54,19 @@ public class UsuarioResource {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getUsuario(@PathParam("id") Integer id){
-		UsuarioDAO udao = new UsuarioDAO();
-
-		Usuario usuario = udao.buscaUsuario(id);
-		
-		//System.out.println(usuario.getNome());
+		MensagemPadrao mp = new MensagemPadrao();
+		mp.setStatus("Ok teste.");
 		
 		Gson gson = new Gson();
-		String usr = gson.toJson(usuario, Usuario.class);
-		return usr;
+		
+		return gson.toJson(mp);
 	}
 	
 	@GET
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String excluirUsuario(@PathParam("id") Integer id){
-		try{
-			UsuarioDAO udao = new UsuarioDAO();
-			
-			Usuario usuario = udao.buscaUsuario(id); 
-			udao.excluir(usuario);
-			
-			return "ok";//TODO
-		}catch(Exception e){
-			e.printStackTrace();
-			return null;//TODO
-		}
+		return null;
 	}
 
 }
