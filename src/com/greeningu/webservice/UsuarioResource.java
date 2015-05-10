@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.Gson;
 import com.greeningu.bean.MensagemPadrao;
 import com.greeningu.bean.Usuario;
+import com.greeningu.bean.UsuarioLogin;
 import com.greeningu.crud.UsuarioCRUD;
 
 @Path("usuario")
@@ -60,6 +61,29 @@ public class UsuarioResource {
 		Gson gson = new Gson();
 		
 		return gson.toJson(mp);
+	}
+	
+	@POST
+	@Path("/login")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String login(String login){
+		Gson gson = new Gson();
+		UsuarioCRUD uc = new UsuarioCRUD();
+		MensagemPadrao mensagem = new MensagemPadrao();
+		
+		UsuarioLogin ulogin = gson.fromJson(login, UsuarioLogin.class);
+		
+		UsuarioLogin cmp = uc.buscaLogin(ulogin.getLogin());
+		
+		if(ulogin.getLogin().equals(cmp.getLogin()) && ulogin.getSenha().equals(cmp.getSenha())){
+			mensagem.setStatus("OK");
+			mensagem.setInfo(gson.toJson(cmp));
+		}else{
+			mensagem.setStatus("NOK");
+		}
+		
+		return gson.toJson(mensagem);
 	}
 	
 	@GET

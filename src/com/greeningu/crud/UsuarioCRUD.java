@@ -76,7 +76,7 @@ public class UsuarioCRUD {
 		ResultSet resultSet = null;
 		UsuarioLogin usuarioLogin = null;
 		
-		String select = "select id,login,senha from usuario where login = ?";
+		String select = "select * from usuario where login = ?";
 		
 		try {
 			ps = conexao.prepareStatement(select);
@@ -89,6 +89,8 @@ public class UsuarioCRUD {
 				usuarioLogin.setId(resultSet.getInt("id"));
 				usuarioLogin.setLogin(resultSet.getString("login"));
 				usuarioLogin.setSenha(resultSet.getString("senha"));
+				
+				System.out.println(usuarioLogin.getLogin());
 			}
 			
 		} catch (SQLException e) {
