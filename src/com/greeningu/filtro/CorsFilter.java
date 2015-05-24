@@ -1,4 +1,4 @@
-package com.greeningu.filter;
+package com.greeningu.filtro;
 
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerResponse;
