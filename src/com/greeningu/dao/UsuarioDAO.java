@@ -333,4 +333,33 @@ public class UsuarioDAO extends Dao implements CRUD {
 		return status;
 
 	}
+	
+	public Integer buscarQtdePosts(int idUser){
+		
+		abrirConexao();
+		
+		Integer qtde = null;
+		String select = "select count(*) from usuario_postagem where id_usuario = ?";
+		
+		try {
+			preparedStatement = conexao.prepareStatement(select);
+			preparedStatement.setInt(1, idUser);
+			resultSet = preparedStatement.executeQuery();
+			
+			if (resultSet.next()) {
+				qtde = resultSet.getInt("count(*)");
+			}
+			
+			System.out.println("Qtde Posts: " + qtde);
+		}catch(Exception e){
+			
+		}finally{
+			fecharConexao();
+		}
+		
+		
+		
+		return qtde;
+		
+	}
 }

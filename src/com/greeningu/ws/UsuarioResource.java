@@ -148,6 +148,21 @@ public class UsuarioResource {
 			return gson.toJson(mensagem);
 		}
 	}
+	
+	@GET
+	@Path("/qtdePosts/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getQtdePosts(@PathParam("id") Integer id){
+		
+		Integer qtde;
+		UsuarioDAO userDao = new UsuarioDAO();
+		
+		qtde = userDao.buscarQtdePosts(id);
+		
+		
+		return qtde.toString();
+		
+	}
 
 	@GET
 	@Path("/delete/{id}")
