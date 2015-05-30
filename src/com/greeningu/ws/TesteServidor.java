@@ -7,6 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.greeningu.log.LogClass;
+
 @Path("/testeServidor")
 public class TesteServidor {
 	
@@ -14,6 +16,7 @@ public class TesteServidor {
 	@Path("/")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String teste(){
+		LogClass.msg("teste log");
 		return "ONLINE";
 	}
 }
