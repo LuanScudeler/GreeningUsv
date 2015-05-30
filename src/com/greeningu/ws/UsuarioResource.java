@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.greeningu.bean.MensagemPadrao;
 import com.greeningu.bean.Usuario;
 import com.greeningu.bean.UsuarioLogin;
+import com.greeningu.dao.ComunidadeDAO;
 import com.greeningu.dao.UsuarioDAO;
 import com.greeningu.log.Log;
 
@@ -127,6 +128,7 @@ public class UsuarioResource {
 
 
 			usuario = dao.buscarPorLogin(ulogin.getLogin());
+
 
 			if(ulogin.getLogin().equals(usuario.getLogin()) && ulogin.getSenha().equals(usuario.getSenha())){
 				mensagem.setStatus("OK");

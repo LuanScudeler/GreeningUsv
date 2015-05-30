@@ -38,15 +38,16 @@ public class UsuarioDAO extends Dao implements CRUD {
 				+ " inner join usuario_comunidade uc on u.id = uc.id_usuario"
 				+ " inner join comunidade c on uc.id_comunidade = c.id"
 				+ " where u.id = ?";
-		try{
+		try {
 
 			preparedStatement = conexao.prepareStatement(select);
 			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
 
-			if(resultSet.next()){
+			if (resultSet.next()) {
 
-				usuario = ConstrutorDeObjetos.construirUsuario(resultSet, new Usuario());
+				usuario = ConstrutorDeObjetos.construirUsuario(resultSet,
+						new Usuario());
 
 				comunidade = new Comunidade();
 
@@ -58,13 +59,13 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 			}
 
-			Log.sucesso(NOME_CLASSE,METODO_BUSCAR);
+			Log.sucesso(NOME_CLASSE, METODO_BUSCAR);
 
-		}catch(Exception e){
+		} catch (Exception e) {
 
 			Log.erro(NOME_CLASSE, METODO_BUSCAR, e);
 
-		}finally{
+		} finally {
 
 			fecharConexao();
 
@@ -97,9 +98,10 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 			resultSet = preparedStatement.executeQuery();
 
-			while(resultSet.next()){
+			while (resultSet.next()) {
 
-				usuario = ConstrutorDeObjetos.construirUsuario(resultSet, new Usuario());
+				usuario = ConstrutorDeObjetos.construirUsuario(resultSet,
+						new Usuario());
 
 				comunidade = new Comunidade();
 
@@ -116,7 +118,7 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 		} catch (Exception e) {
 			Log.erro(NOME_CLASSE, METODO_LISTAR, e);
-		} finally{
+		} finally {
 
 			fecharConexao();
 		}
@@ -126,23 +128,23 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 	@Override
 	public int salvar(Object objeto) {
-		
+
 		int status = 0;
-		
+
 		int statusUsuario = 0;
-		
+
 		int statusComunidade = 0;
 
 		abrirConexao();
 
-		Usuario usuario = (Usuario) objeto; 
+		Usuario usuario = (Usuario) objeto;
 
 		Integer novoIdUsuario = null;
 
 		String insertUsuario = "insert into usuario(nome, sobrenome, email, login, senha, sexo, pontuacao)"
 				+ "values (?,?,?,?,?,?,?)";
 		try {
-			//Iserindo usuario
+			// Iserindo usuario
 			preparedStatement = conexao.prepareStatement(insertUsuario);
 
 			preparedStatement.setString(1, usuario.getNome());
@@ -155,18 +157,19 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 			statusUsuario = preparedStatement.executeUpdate();
 
-			ResultSet resultSet = preparedStatement.executeQuery("SELECT LAST_INSERT_ID()");
-			if (resultSet.next()){
+			ResultSet resultSet = preparedStatement
+					.executeQuery("SELECT LAST_INSERT_ID()");
+			if (resultSet.next()) {
 
 				novoIdUsuario = resultSet.getInt("LAST_INSERT_ID()");
 			}
 
-
-			//Inserindo registro na tabela usuario_comunidade
-			if(usuario.getComunidade() != null){
+			// Inserindo registro na tabela usuario_comunidade
+			if (usuario.getComunidade() != null) {
 				String insertUsuarioComunidade = "insert into usuario_comunidade(data_insercao, id_usuario, id_comunidade)"
 						+ " values(sysdate(),?,?)";
-				preparedStatement = conexao.prepareStatement(insertUsuarioComunidade);
+				preparedStatement = conexao
+						.prepareStatement(insertUsuarioComunidade);
 				preparedStatement.setInt(1, novoIdUsuario);
 				preparedStatement.setInt(2, usuario.getComunidade().getId());
 
@@ -178,17 +181,17 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 		} catch (Exception e) {
 			Log.erro(NOME_CLASSE, METODO_SALVAR, e);
-		}finally{
+		} finally {
 
 			fecharConexao();
 		}
-		
-		if(statusComunidade == 0 && statusUsuario == 0){
+
+		if (statusComunidade == 0 && statusUsuario == 0) {
 			status = 0;
-		} else if(statusComunidade == 1 && statusUsuario == 1){
+		} else if (statusComunidade == 1 && statusUsuario == 1) {
 			status = 1;
 		}
-		
+
 		return status;
 	}
 
@@ -200,7 +203,7 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 	@Override
 	public int atualizar(Object objeto) {
-		
+
 		int status = 0;
 
 		abrirConexao();
@@ -229,14 +232,14 @@ public class UsuarioDAO extends Dao implements CRUD {
 			Log.sucesso(NOME_CLASSE, METODO_ATUALIZAR);
 
 		} catch (Exception e) {
-			
+
 			Log.erro(update, METODO_ATUALIZAR, e);
-			
-		} finally{
+
+		} finally {
 
 			fecharConexao();
 		}
-		
+
 		return status;
 	}
 
@@ -252,36 +255,58 @@ public class UsuarioDAO extends Dao implements CRUD {
 		return 0;
 	}
 
-	public Usuario buscarPorLogin(String login){
+	public Usuario buscarPorLogin(String login) {
+
 		abrirConexao();
 
 		Usuario usuario = null;
+		Comunidade comunidade = null;
 
-		String select = "select * from usuario where login = ?";
-
+		String select = " select u.id, u.nome, u.sobrenome, u.email, u.login, u.senha, u.sexo, u.pontuacao,"
+				+ " c.id as id_comunidade, c.nome as nome_comunidade, c.usuario_lider"
+				+ " from usuario u"
+				+ " inner join usuario_comunidade uc on u.id = uc.id_usuario"
+				+ " inner join comunidade c on uc.id_comunidade = c.id"
+				+ " where u.login = ?";
 		try {
+
 			preparedStatement = conexao.prepareStatement(select);
 			preparedStatement.setString(1, login);
 			resultSet = preparedStatement.executeQuery();
 
-			if(resultSet.next()){
-				usuario = ConstrutorDeObjetos.construirUsuario(resultSet, new Usuario());
+			if (resultSet.next()) {
+
+				usuario = ConstrutorDeObjetos.construirUsuario(resultSet,
+						new Usuario());
+
+				comunidade = new Comunidade();
+
+				comunidade.setId(resultSet.getInt("id_comunidade"));
+				comunidade.setNome(resultSet.getString("nome_comunidade"));
+				comunidade.setUsarioLider(resultSet.getInt("usuario_lider"));
+
+				usuario.setComunidade(comunidade);
+
 			}
 
 			Log.sucesso(NOME_CLASSE, METODO_BUSCAR_POR_LOGIN);
 
 		} catch (Exception e) {
+
 			Log.erro(NOME_CLASSE, METODO_BUSCAR_POR_LOGIN, e);
-		}finally{
+
+		} finally {
 
 			fecharConexao();
+
 		}
 
 		return usuario;
+
 	}
 
-	public int atualizarPontuacao(Usuario usuario, int pontos){
-		
+	public int atualizarPontuacao(Usuario usuario, int pontos) {
+
 		int status = 0;
 
 		abrirConexao();
@@ -301,10 +326,10 @@ public class UsuarioDAO extends Dao implements CRUD {
 
 		} catch (Exception e) {
 			Log.erro(NOME_CLASSE, METODO_ATUALIZAR_PONTUACAO, e);
-		}finally{
+		} finally {
 			fecharConexao();
 		}
-		
+
 		return status;
 
 	}
