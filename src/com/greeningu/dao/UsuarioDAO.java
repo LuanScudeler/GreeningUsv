@@ -23,6 +23,7 @@ public class UsuarioDAO extends Dao implements CRUD {
 	private static final String NOME_CLASSE = "UsuarioDAO";
 	private static final String METODO_BUSCAR_POR_LOGIN = "buscarPorLogin()";
 	private static final String METODO_ATUALIZAR_PONTUACAO = "atualizarPontuacao()";
+	private static final String METODO_BUSCAR_QTDE_POSTS = "buscarQtdePosts()";
 
 	@Override
 	public Object buscar(Integer id) {
@@ -350,16 +351,14 @@ public class UsuarioDAO extends Dao implements CRUD {
 				qtde = resultSet.getInt("count(*)");
 			}
 			
-			System.out.println("Qtde Posts: " + qtde);
+			Log.sucesso(NOME_CLASSE, METODO_BUSCAR_QTDE_POSTS);
 		}catch(Exception e){
+			
+			Log.erro(NOME_CLASSE, METODO_BUSCAR_QTDE_POSTS, e);
 			
 		}finally{
 			fecharConexao();
 		}
-		
-		
-		
 		return qtde;
-		
 	}
 }

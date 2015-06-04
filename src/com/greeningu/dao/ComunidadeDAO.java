@@ -225,8 +225,8 @@ public class ComunidadeDAO extends Dao implements CRUD{
 			Log.erro(NOME_CLASSE, METODO_BUSCAR_QTD_MEMBROS, e);
 		} finally{
 			fecharConexao();
-			return qtd;
 		}
+		return qtd;
 	}
 
 	public Integer buscarTotalPontosDosMembros(Integer idComunidade){
@@ -259,8 +259,8 @@ public class ComunidadeDAO extends Dao implements CRUD{
 			Log.erro(NOME_CLASSE, METODO_BUSCAR_TOTAL_PONTOS, e);
 		} finally{
 			fecharConexao();
-			return pontos;
 		}
+		return pontos;
 	}
 	
 	public String buscarNomeLider(Integer idComunidade){
@@ -287,8 +287,9 @@ public class ComunidadeDAO extends Dao implements CRUD{
 			Log.erro(NOME_CLASSE, METODO_BUSCAR_NOME_LIDER, e);
 		} finally {
 			fecharConexao();
-			return nomeLider;
 		}
+		
+		return nomeLider;
 	}
 
 
