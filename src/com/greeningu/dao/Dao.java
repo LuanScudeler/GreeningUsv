@@ -32,12 +32,15 @@ public abstract class Dao {
 	
 	protected void fecharConexao(){
 		try {
-			if(conexao != null && !conexao.isClosed())
+			/*if(conexao != null && !conexao.isClosed())
 				conexao.close();
 			if( resultSet != null && !resultSet.isClosed())
 				resultSet.close();
 			if( preparedStatement != null && !preparedStatement.isClosed())
-				preparedStatement.close();
+				preparedStatement.close();*/
+			conexao.close();
+			resultSet.close();
+			preparedStatement.close();
 			
 			Log.sucesso(NOME_CLASSE, METODO_FECHAR_CONEXAO);
 		} catch (Exception e) {
