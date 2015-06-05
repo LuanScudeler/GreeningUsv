@@ -163,7 +163,39 @@ public class UsuarioResource {
 		return qtde.toString();
 		
 	}
+	
+	@GET
+	@Path("/qtdeComunidades/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getQtdeComunidades(@PathParam("id") Integer id){
+		
+		Integer qtde;
+		UsuarioDAO userDao = new UsuarioDAO();
+		
+		qtde = userDao.buscarQtdeComunidades(id);
+		
+		System.out.println("QtdeComu: " + qtde);
+		return qtde.toString();
+		
+	}
 
+	@GET
+	@Path("/nomeComunidade/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getNomeComunidade(@PathParam("id") Integer id){
+		
+		String nomeComunidade;
+		UsuarioDAO userDao = new UsuarioDAO();
+		
+		nomeComunidade = userDao.buscarNomeComunidade(id);
+		
+		System.out.println("NomeComunidade: " + nomeComunidade);
+		
+		return nomeComunidade;
+		
+	}
+	
+	
 	@GET
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

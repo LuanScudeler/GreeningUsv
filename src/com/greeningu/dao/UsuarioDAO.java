@@ -361,4 +361,62 @@ public class UsuarioDAO extends Dao implements CRUD {
 		}
 		return qtde;
 	}
+	
+	public Integer buscarQtdeComunidades(int idUser){
+		
+		abrirConexao();
+		
+		Integer qtde = null;
+		String select = "select count(*) from usuario_comunidade where id_usuario = ?";
+		
+		try {
+			preparedStatement = conexao.prepareStatement(select);
+			preparedStatement.setInt(1, idUser);
+			resultSet = preparedStatement.executeQuery();
+			
+			if (resultSet.next()) {
+				qtde = resultSet.getInt("count(*)");
+			}
+			
+			Log.sucesso(NOME_CLASSE, METODO_BUSCAR_QTDE_POSTS);
+		}catch(Exception e){
+			
+			Log.erro(NOME_CLASSE, METODO_BUSCAR_QTDE_POSTS, e);
+			
+		}finally{
+			fecharConexao();
+		}
+		return qtde;
+	}
+
+	public String buscarNomeComunidade(Integer idUser) {
+	
+		abrirConexao();
+		
+		String nomeComunidade = null;
+		String select = "select c.nome from usuario_comunidade uc inner join "
+				+ "comunidade c where uc.id_comunidade = c.id and uc.id_usuario = ?";
+		
+		try {
+			preparedStatement = conexao.prepareStatement(select);
+			preparedStatement.setInt(1, idUser);
+			resultSet = preparedStatement.executeQuery();
+			
+			if (resultSet.next()) {
+				nomeComunidade = resultSet.getString("nome");
+			}
+			
+			Log.sucesso(NOME_CLASSE, METODO_BUSCAR_QTDE_POSTS);
+		}catch(Exception e){
+			
+			Log.erro(NOME_CLASSE, METODO_BUSCAR_QTDE_POSTS, e);
+			
+		}finally{
+			fecharConexao();
+		}
+		
+		
+		return nomeComunidade;
+	}
+	
 }
