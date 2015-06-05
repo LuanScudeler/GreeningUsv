@@ -2,27 +2,32 @@ package com.greeningu.bean;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 
 public class Postagem implements Serializable{
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8505471156320246074L;
-	
+	private static final long serialVersionUID = -1303445147454201116L;
 	private Integer id;
+	private Integer idUsuario;
 	private String titulo;
 	private String descricao;
-	private byte[] imagem;
+	private String imagem;
+	private Date data;
 	
 	public Postagem(){}
 
-	public Postagem(Integer id, String titulo, String descricao, byte[] imagem) {
+	public Postagem(Integer id, Integer idUsuario, String titulo,
+			String descricao, String imagem, Date data) {
 		super();
 		this.id = id;
+		this.idUsuario = idUsuario;
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.imagem = imagem;
+		this.data = data;
 	}
 
 	public Integer getId() {
@@ -31,6 +36,14 @@ public class Postagem implements Serializable{
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	public String getTitulo() {
@@ -49,22 +62,33 @@ public class Postagem implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public byte[] getImagem() {
+	public String getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(byte[] imagem) {
+	public void setImagem(String imagem) {
 		this.imagem = imagem;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + Arrays.hashCode(imagem);
+		result = prime * result
+				+ ((idUsuario == null) ? 0 : idUsuario.hashCode());
+		result = prime * result + ((imagem == null) ? 0 : imagem.hashCode());
 		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
 		return result;
 	}
@@ -78,6 +102,11 @@ public class Postagem implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Postagem other = (Postagem) obj;
+		if (data == null) {
+			if (other.data != null)
+				return false;
+		} else if (!data.equals(other.data))
+			return false;
 		if (descricao == null) {
 			if (other.descricao != null)
 				return false;
@@ -88,7 +117,15 @@ public class Postagem implements Serializable{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (!Arrays.equals(imagem, other.imagem))
+		if (idUsuario == null) {
+			if (other.idUsuario != null)
+				return false;
+		} else if (!idUsuario.equals(other.idUsuario))
+			return false;
+		if (imagem == null) {
+			if (other.imagem != null)
+				return false;
+		} else if (!imagem.equals(other.imagem))
 			return false;
 		if (titulo == null) {
 			if (other.titulo != null)
@@ -97,7 +134,6 @@ public class Postagem implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
 
+	
 }
