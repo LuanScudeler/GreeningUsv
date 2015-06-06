@@ -32,12 +32,7 @@ public abstract class Dao {
 	
 	protected void fecharConexao(){
 		try {
-			/*if(conexao != null && !conexao.isClosed())
-				conexao.close();
-			if( resultSet != null && !resultSet.isClosed())
-				resultSet.close();
-			if( preparedStatement != null && !preparedStatement.isClosed())
-				preparedStatement.close();*/
+			
 			conexao.close();
 			resultSet.close();
 			preparedStatement.close();

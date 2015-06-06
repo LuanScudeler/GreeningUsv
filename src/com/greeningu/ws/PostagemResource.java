@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.greeningu.bean.MensagemPadrao;
 import com.greeningu.bean.Postagem;
 import com.greeningu.bean.PostagemSimplificada;
@@ -53,7 +54,9 @@ public class PostagemResource {
 		lista = dao.listarPostagensSimplificadas(idUsuario);
 		
 		if(lista.size() > 0){
-			return new Gson().toJson(lista);
+			Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+			
+			return gson.toJson(lista);
 		} else {
 			MensagemPadrao mp = new MensagemPadrao();
 			mp.setStatus("Não foram encontradas postagens para a comunidade");
