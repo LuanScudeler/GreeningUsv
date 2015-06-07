@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.greeningu.bean.Comunidade;
 import com.greeningu.bean.Postagem;
 import com.greeningu.bean.PostagemSimplificada;
+import com.greeningu.fabricadeobjetos.ConstrutorDeObjetos;
 import com.greeningu.log.Log;
 
 public class PostagemDAO extends Dao implements CRUD {
@@ -19,9 +21,32 @@ public class PostagemDAO extends Dao implements CRUD {
 	
 	
 	@Override
-	public Object buscar(Integer id) {
-		//TODO
-		return null;
+	public Postagem buscar(Integer id) {
+		abrirConexao();
+		Postagem postagem = new Postagem();
+		String select = "select * from postagem where id = ?";
+
+		try{
+			preparedStatement = conexao.prepareStatement(select);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+
+			if(resultSet.next()){
+				postagem.setId(resultSet.getInt("id"));
+				postagem.setTitulo(resultSet.getString("titulo"));
+				postagem.setDescricao(resultSet.getString("descricao"));
+				postagem.setImagem(resultSet.getString("imagem"));
+				postagem.setData(resultSet.getDate("data_postagem"));
+			}
+			Log.sucesso(NOME_CLASSE, METODO_BUSCAR);
+
+		}catch(Exception e){
+			Log.erro(NOME_CLASSE, METODO_BUSCAR, e);
+		}finally{
+			fecharConexao();
+		}
+
+		return postagem;
 	}
 
 	@Override
@@ -36,7 +61,7 @@ public class PostagemDAO extends Dao implements CRUD {
 		
 		ArrayList<PostagemSimplificada> postagens = new ArrayList<PostagemSimplificada>();
 		
-		String select = "select p.titulo, up.data_postagem, u.nome, u.sobrenome"
+		String select = "select up.id_postagem, p.titulo, up.data_postagem, u.nome, u.sobrenome"
 				+ " from postagem p"
 				+ " inner join usuario_postagem up"
 				+ " on p.id = up.id_postagem"
@@ -58,11 +83,12 @@ public class PostagemDAO extends Dao implements CRUD {
 				PostagemSimplificada postagemSimplificada = new  PostagemSimplificada();
 				
 				String nomeUsuario = resultSet.getString("nome") + " " + resultSet.getString("sobrenome");
-				
+				postagemSimplificada.setId(resultSet.getInt("id_postagem"));
 				postagemSimplificada.setNomeUsuario(nomeUsuario);
 				postagemSimplificada.setTitulo(resultSet.getString("titulo"));
 				postagemSimplificada.setDataPostagem(resultSet.getDate("data_postagem"));
 				
+				System.out.println(postagemSimplificada.getDataPostagem());
 				postagens.add(postagemSimplificada);
 			}
 			

@@ -15,11 +15,15 @@ import com.google.gson.GsonBuilder;
 import com.greeningu.bean.MensagemPadrao;
 import com.greeningu.bean.Postagem;
 import com.greeningu.bean.PostagemSimplificada;
+import com.greeningu.dao.ComunidadeDAO;
 import com.greeningu.dao.PostagemDAO;
 import com.greeningu.log.Log;
 
 @Path("postagem")
 public class PostagemResource {
+	
+	private static final String NOME_CLASSE = "PostagemResource";
+	private static final String METODO_BUSCAR_POSTAGEM = "buscar()";
 	
 	@POST
 	@Path("/inserir")
@@ -61,6 +65,27 @@ public class PostagemResource {
 			MensagemPadrao mp = new MensagemPadrao();
 			mp.setStatus("Não foram encontradas postagens para a comunidade");
 			return new Gson().toJson(mp);
+		}
+	}
+	
+	@GET
+	@Path("/buscaPostagem/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String buscaPostagem(@PathParam("id") Integer id){
+		try{
+			PostagemDAO dao = new PostagemDAO();
+			Postagem result = new Postagem();
+			result = dao.buscar(id);
+			
+			Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+			String post = gson.toJson(result);
+			
+			System.out.println("Titulo: " + result.getTitulo() + " IdPost: " + result.getId() + " Data: " + result.getData());
+			return post;
+			
+		}catch(Exception e){
+			Log.erro(NOME_CLASSE, METODO_BUSCAR_POSTAGEM,  e);
+			return null;
 		}
 	}
 	
