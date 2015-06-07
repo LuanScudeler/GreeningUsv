@@ -106,6 +106,17 @@ public class UsuarioResource {
 		
 		return lista;
 	}
+	
+	@GET
+	@Path("/buscarSexo/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String buscarSexo(@PathParam("id") Integer id){
+		UsuarioDAO dao = new UsuarioDAO();
+		
+		String sexo = dao.buscarSexo(id);
+		
+		return sexo;
+	}
 
 	@POST
 	@Path("/login")

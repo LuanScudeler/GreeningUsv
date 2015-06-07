@@ -24,6 +24,10 @@ public class UsuarioDAO extends Dao implements CRUD {
 	private static final String METODO_BUSCAR_POR_LOGIN = "buscarPorLogin()";
 	private static final String METODO_ATUALIZAR_PONTUACAO = "atualizarPontuacao()";
 	private static final String METODO_BUSCAR_QTDE_POSTS = "buscarQtdePosts()";
+	private static final String METODO_BUSCAR_SEXO = "buscarSexo()";
+	private static final String METODO_BUSCAR_PONTUACAO = "buscarPontuacao()";
+	
+	
 
 	@Override
 	public Object buscar(Integer id) {
@@ -417,6 +421,35 @@ public class UsuarioDAO extends Dao implements CRUD {
 		
 		
 		return nomeComunidade;
+	}
+	
+	public String buscarSexo(Integer id){
+		
+		abrirConexao();
+		
+		String sexo = null;
+		
+		String select = "select sexo from usuario where id = ?";
+		
+		try {
+			
+			preparedStatement = conexao.prepareStatement(select);
+			preparedStatement.setInt(1, id);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			if(resultSet.next()){
+				sexo = resultSet.getString("sexo");
+			}
+			
+			Log.sucesso(NOME_CLASSE, METODO_BUSCAR_SEXO);
+		} catch (SQLException e) {
+			Log.erro(NOME_CLASSE, METODO_BUSCAR_SEXO, e);
+		} finally {
+			fecharConexao();
+		}
+		
+		return sexo;
 	}
 	
 }
