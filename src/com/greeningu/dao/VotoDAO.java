@@ -121,6 +121,7 @@ public class VotoDAO extends Dao implements CRUD{
 		// TODO
 		return 0;
 	}
+	
 
 	@Override
 	public int atualizar(Object objeto, Map campos) {

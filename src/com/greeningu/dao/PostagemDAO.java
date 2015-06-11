@@ -74,32 +74,36 @@ public class PostagemDAO extends Dao implements CRUD {
 		
 		ArrayList<PostagemSimplificada> postagens = new ArrayList<PostagemSimplificada>();
 		
-		String select = "select *" 
-				+ " from postagem p"
+		String select = "select * from"
+				+ " postagem p"
 				+ " inner join usuario_postagem up"
 				+ " on p.id = up.id_postagem"
-				+ " inner join usuario u" 
+				+ " inner join usuario u"
 				+ " on u.id = up.id_usuario"
 				+ " inner join usuario_comunidade uc"
 				+ " on u.id = uc.id_usuario"
 				+ " inner join comunidade c"
 				+ " on uc.id_comunidade = c.id"
 				+ " where u.id <> ?"
-				+ " and c.id = ("	
-				    + " select uc.id_comunidade"
-				    + " from usuario u"
-				    + " inner join usuario_comunidade uc"
-				    + " on u.id = uc.id_usuario"
-				    + " and uc.id_usuario = ?"
-				    + " limit 1"
-				+ ")";
-		
+				+ " and p.id not in ("
+					+ " select id_postagem from"
+					+ " voto vo"
+					+ " where vo.id_usuario_votador = ?"
+				+ " )"
+				+ " and c.id in ("
+				+ "     select uc.id_comunidade"
+				+ "     from usuario u"
+				+ "     inner join usuario_comunidade uc"
+				+ "     on u.id = uc.id_usuario"
+				+ "     where uc.id_usuario = ?"
+				+ " )";
 		try {
 			
 			preparedStatement = conexao.prepareStatement(select);
 			
 			preparedStatement.setInt(1, idUsuario);
 			preparedStatement.setInt(2, idUsuario);
+			preparedStatement.setInt(3, idUsuario);
 			
 			resultSet = preparedStatement.executeQuery();
 			
