@@ -78,9 +78,10 @@ public class PostagemResource {
 			result = dao.buscar(id);
 			
 			Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+			//Gson gson = new Gson();
 			String post = gson.toJson(result);
 			
-			System.out.println("Titulo: " + result.getTitulo() + " IdPost: " + result.getId() + " Data: " + result.getData());
+			System.out.println("Titulo: " + result.getTitulo() + " IdPost: " + result.getId() );
 			return post;
 			
 		}catch(Exception e){
