@@ -15,6 +15,7 @@ import com.greeningu.log.Log;
 public class VotoDAO extends Dao implements CRUD{
 	
 	private static final String NOME_CLASSE = "VotoDAO";
+	private static final String METODO_JA_VOTADO = "jaVotado()";
 
 	public VotoDAO(){}
 
@@ -115,6 +116,36 @@ public class VotoDAO extends Dao implements CRUD{
 		
 		return status;
 	}
+	
+	public Boolean jaVotado(Integer idUsuario, Integer idPostagem){
+		
+		abrirConexao();
+		
+		boolean status = false;
+		
+		String select = "select * from voto v"
+				+ " where v.id_usuario_votador = ?"
+				+ " and v.id_postagem = ?";
+		try {
+			preparedStatement = conexao.prepareStatement(select);
+			preparedStatement.setInt(1, idUsuario);
+			preparedStatement.setInt(2, idPostagem);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			status = resultSet.next();
+			
+			Log.sucesso(NOME_CLASSE, METODO_JA_VOTADO);
+		} catch (SQLException e) {
+			Log.erro(NOME_CLASSE, METODO_JA_VOTADO, e);
+		} finally {
+			fecharConexao();
+		}
+		
+		return status;
+		
+	}
+	
 	@SuppressWarnings("unused")
 	@Override
 	public int salvar(Object objeto, Map campos) {

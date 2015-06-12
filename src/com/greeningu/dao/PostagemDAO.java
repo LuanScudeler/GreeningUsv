@@ -85,11 +85,11 @@ public class PostagemDAO extends Dao implements CRUD {
 				+ " inner join comunidade c"
 				+ " on uc.id_comunidade = c.id"
 				+ " where u.id <> ?"
-				+ " and p.id not in ("
-					+ " select id_postagem from"
-					+ " voto vo"
-					+ " where vo.id_usuario_votador = ?"
-				+ " )"
+//				+ " and p.id not in ("
+//					+ " select id_postagem from"
+//					+ " voto vo"
+//					+ " where vo.id_usuario_votador = ?"
+//				+ " )"
 				+ " and c.id in ("
 				+ "     select uc.id_comunidade"
 				+ "     from usuario u"
@@ -103,7 +103,7 @@ public class PostagemDAO extends Dao implements CRUD {
 			
 			preparedStatement.setInt(1, idUsuario);
 			preparedStatement.setInt(2, idUsuario);
-			preparedStatement.setInt(3, idUsuario);
+			//preparedStatement.setInt(3, idUsuario);
 			
 			resultSet = preparedStatement.executeQuery();
 			
