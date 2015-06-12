@@ -1,15 +1,18 @@
 package com.greeningu.dao;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.greeningu.bean.Comentario;
+import com.greeningu.bean.PostagemSimplificada;
 import com.greeningu.log.Log;
 
 public class ComentarioDAO extends Dao implements CRUD{
 
 	private static final String NOME_CLASSE = "ComentarioDAO";
-	
+	private static final String METODO_LISTAR_COMENTARIO = "listarComentario()";
 	
 	public int salvarComentario(Comentario comentario) {
 
@@ -51,6 +54,44 @@ public class ComentarioDAO extends Dao implements CRUD{
 		}
 		return status;
 	}
+	
+	public ArrayList<Comentario> listarComentarios(Integer idPost) {
+		
+		abrirConexao();
+		
+		ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
+		
+		String select = "select texto, data_comentario from comentario c "
+				+ "inner join usuario_comentario uc on c.id = uc.id_comentario where c.id_postagem = ?;";
+		
+		System.out.println("BUSCANDO COMENTARIOS");
+		try {
+			
+			preparedStatement = conexao.prepareStatement(select);
+			
+			preparedStatement.setInt(1, idPost);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()){
+				Comentario comentario = new  Comentario();
+				
+				comentario.setData(resultSet.getDate("data_comentario"));
+				comentario.setTexto(resultSet.getString("texto"));
+				
+				System.out.println("Comentario: " + comentario.getData() + ", " + comentario.getTexto());
+				comentarios.add(comentario);
+			}
+			
+		} catch (SQLException e) {
+			Log.erro(NOME_CLASSE, METODO_LISTAR_COMENTARIO, e);
+		} finally{
+			fecharConexao();
+		}
+		
+		return comentarios;
+	}
+	
 
 	@Override
 	public Object buscar(Integer id) {
